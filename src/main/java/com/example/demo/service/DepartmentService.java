@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dao.DepartmentResponse;
 import com.example.demo.entity.Department;
+import com.example.demo.exceptions.DomainException;
 import com.example.demo.repository.DepartmentRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,32 +21,45 @@ public class DepartmentService {
         this.repository = repository;
     }
 
-    public String getName(long id){
-        return this.repository.getById(id).getDpName();
+    public String getName(long id) {
+        try {
+            return this.repository.getById(id).getDpName();
+        } catch (EmptyResultDataAccessException ex) {
+            throw new DomainException("Invalid Id");
+        }
     }
 
-    public DepartmentResponse getById(long id){
-        Department department = this.repository.getById(id);
-        return new DepartmentResponse(department.getDpID(),department.getDpName());
+    public DepartmentResponse getById(long id) {
+        try {
+            Department department = this.repository.getById(id);
+            return new DepartmentResponse(department.getDpID(), department.getDpName());
+        } catch (EmptyResultDataAccessException ex) {
+            throw new DomainException("Invalid Department Id");
+        }
     }
 
-    public void createNewDepartment(Department department){
+    public void createNewDepartment(Department department) {
         this.repository.create(department);
     }
 
-    public void updateDepartment(Department department){
+    public void updateDepartment(Department department) {
         this.repository.updateDepartment(department);
     }
 
-    public boolean deleteDepartment(long id){
+    public boolean deleteDepartment(long id) {
         return this.repository.deleteDepartment(id);
     }
 
-    public List<DepartmentResponse> getAll(int page, int limit){
+    public List<DepartmentResponse> getAll(int page, int limit) {
         int startPoint = getStartPointLimit(page, limit);
-        List<Department> all = this.repository.getAll(startPoint, startPoint + limit);
-        return all.stream().map(department -> {
-            return new DepartmentResponse(department.getDpID(),department.getDpName());
-        }).collect(Collectors.toList());
+        try {
+            List<Department> all = this.repository.getAll(startPoint, startPoint + limit);
+
+            return all.stream().map(department -> {
+                return new DepartmentResponse(department.getDpID(), department.getDpName());
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ex) {
+            throw new DomainException("Empty table");
+        }
     }
 }

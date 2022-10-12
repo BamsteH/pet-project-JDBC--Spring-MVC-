@@ -8,6 +8,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.SQLNonTransientException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,7 +28,12 @@ public class EmployeeService {
     }
 
     public void createEmployee(Employee employee) {
-        this.repository.create(employee);
+        try{
+            this.departmentService.getById(employee.getEmp_dpID());
+            this.repository.create(employee);
+        } catch (SQLNonTransientException e) {
+            throw new DomainException("department doens't exist");
+        }
     }
 
     public EmployeeResponse readEmployeeById(long id) {
@@ -54,8 +61,12 @@ public class EmployeeService {
 
     public List<EmployeeResponse> readByStartsWith(String startsWith, int page, int limit) {
         int pointLimit = getStartPointLimit(page, limit);
-        return this.transferObjectToResponse(this.repository
-                .getByStartsWith(startsWith, pointLimit, pointLimit + limit));
+        try{
+            return this.transferObjectToResponse(this.repository
+                    .getByStartsWith(startsWith, pointLimit, pointLimit + limit));
+        } catch (EmptyResultDataAccessException ex){
+            throw new DomainException("NotFound");
+        }
     }
 
     public void updateEmployee(Employee employee) {

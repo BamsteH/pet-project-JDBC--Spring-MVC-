@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Department;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class DepartmentRepository {
                 department.getDpName());
     }
 
-    public Department getById(long id) {
+    public Department getById(long id) throws EmptyResultDataAccessException {
         String sql = "SELECT * FROM Departments WHERE dpID=?";
         return template.queryForObject(sql,
                 BeanPropertyRowMapper.newInstance(Department.class), id);
@@ -41,7 +42,7 @@ public class DepartmentRepository {
         return this.template.update(sql, id) > 0;
     }
 
-    public List<Department> getAll(int minLimit, int maxLimit) {
+    public List<Department> getAll(int minLimit, int maxLimit) throws EmptyResultDataAccessException {
         String sql = "SELECT * FROM Departments LIMIT ?,?";
         return template.query(sql,
                 BeanPropertyRowMapper.newInstance(Department.class),

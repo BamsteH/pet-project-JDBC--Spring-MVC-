@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.SQLNonTransientException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 
 @Repository
@@ -20,7 +23,7 @@ public class EmployeeRepository {
     }
 
 
-    public void create(Employee employee) {
+    public void create(Employee employee) throws SQLNonTransientException {
         String sql = "INSERT INTO Employees(empName, empActive, emp_dpID) " +
                 "VALUES (?,?,?)";
         template.update(sql,
@@ -36,7 +39,7 @@ public class EmployeeRepository {
                 BeanPropertyRowMapper.newInstance(Employee.class), id);
     }
 
-    public List<Employee> getByStartsWith(String string, int minLimit, int maxLimit) {
+    public List<Employee> getByStartsWith(String string, int minLimit, int maxLimit) throws EmptyResultDataAccessException {
         string = string + "%";
         String sql = "SELECT * FROM Employees WHERE empName LIKE ?  LIMIT ?,?";
         return template.query(sql,
@@ -47,7 +50,7 @@ public class EmployeeRepository {
     }
 
 
-    public List<Employee> getAll(int minLimit, int maxLimit) {
+    public List<Employee> getAll(int minLimit, int maxLimit) throws EmptyResultDataAccessException {
         String sql = "SELECT * FROM Employees LIMIT ?,?";
         return template.query(sql,
                 BeanPropertyRowMapper.newInstance(Employee.class),
