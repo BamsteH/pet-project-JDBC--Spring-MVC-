@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.EmployeeResponse;
-import com.example.demo.entity.Employee;
-import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.dto.employee.EmployeeAddRequest;
+import com.example.demo.dto.employee.EmployeeResponse;
+import com.example.demo.dto.employee.EmployeeUpdateRequest;
 import com.example.demo.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +19,8 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    public void createEmployee(@RequestBody Employee employee) {
-        this.service.createEmployee(employee);
+    public EmployeeResponse createEmployee(@RequestBody EmployeeAddRequest employee) {
+        return this.service.create(employee);
     }
 
     @GetMapping("/{id}")
@@ -28,28 +28,26 @@ public class EmployeeController {
         return this.service.readEmployeeById(id);
     }
 
-    @GetMapping("/all/{page}/{limit}")
-    public List<EmployeeResponse> readAllEmployee(@PathVariable int limit,
-                                                  @PathVariable int page) {
+    @GetMapping("/all")
+    public List<EmployeeResponse> readAllEmployee(@RequestParam(defaultValue = "10") int limit,
+                                                  @RequestParam(defaultValue = "1") int page) {
         return this.service.readAllEmployee(page, limit);
     }
 
-    @GetMapping("/search/{startWith}/{page}/{limit}")
-    public List<EmployeeResponse> readByStartsWith(@PathVariable String startWith,
-                                                   @PathVariable int limit,
-                                                   @PathVariable int page) {
+    @GetMapping("/search")
+    public List<EmployeeResponse> readByStartsWith(@RequestParam String startWith,
+                                                   @RequestParam(defaultValue = "10") int limit,
+                                                   @RequestParam(defaultValue = "1")  int page) {
         return this.service.readByStartsWith(startWith, page, limit);
-
     }
 
     @PutMapping("")
-    public void updateEmployee(@RequestBody Employee employee) {
-        this.service.updateEmployee(employee);
+    public EmployeeResponse updateEmployee(@RequestBody EmployeeUpdateRequest request) {
+        return this.service.update(request);
     }
 
     @DeleteMapping("{id}")
     public boolean deleteEmployeeById(@PathVariable long id) {
-        return this.service.deleteEmployeeById(id);
+        return this.service.delete(id);
     }
-
 }

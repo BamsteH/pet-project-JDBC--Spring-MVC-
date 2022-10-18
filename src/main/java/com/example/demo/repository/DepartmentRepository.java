@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Department;
+import com.example.demo.exceptions.DomainException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,8 +27,12 @@ public class DepartmentRepository {
 
     public Department getById(long id) throws EmptyResultDataAccessException {
         String sql = "SELECT * FROM Departments WHERE dpID=?";
-        return template.queryForObject(sql,
-                BeanPropertyRowMapper.newInstance(Department.class), id);
+        try {
+            return template.queryForObject(sql,
+                    BeanPropertyRowMapper.newInstance(Department.class), id);
+        } catch (EmptyResultDataAccessException exception){
+            throw new DomainException("department doesn't exist");
+        }
     }
 
     public void updateDepartment(Department department) {

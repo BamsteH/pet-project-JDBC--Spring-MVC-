@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.DepartmentResponse;
+import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.entity.Department;
 import com.example.demo.service.DepartmentService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
@@ -34,8 +32,9 @@ public class DepartmentController {
         return this.service.getById(id);
     }
 
-    @GetMapping("/{page}/{limit}")
-    public List<DepartmentResponse> getAll(@PathVariable int limit, @PathVariable int page){
+    @GetMapping("")
+    public List<DepartmentResponse> getAll(@RequestParam(defaultValue = "10") int limit,
+                                           @RequestParam(defaultValue = "1") int page){
         return this.service.getAll(page,limit);
     }
 

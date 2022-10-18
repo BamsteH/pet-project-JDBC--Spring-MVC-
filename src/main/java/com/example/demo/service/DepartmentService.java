@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.DepartmentResponse;
+import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.entity.Department;
 import com.example.demo.exceptions.DomainException;
 import com.example.demo.repository.DepartmentRepository;
@@ -32,7 +32,7 @@ public class DepartmentService {
     public DepartmentResponse getById(long id) {
         try {
             Department department = this.repository.getById(id);
-            return new DepartmentResponse(department.getDpID(), department.getDpName());
+            return new DepartmentResponse(department.getDpName(), department.getDpID());
         } catch (EmptyResultDataAccessException ex) {
             throw new DomainException("Invalid Department Id");
         }
@@ -56,7 +56,7 @@ public class DepartmentService {
             List<Department> all = this.repository.getAll(startPoint, startPoint + limit);
 
             return all.stream().map(department -> {
-                return new DepartmentResponse(department.getDpID(), department.getDpName());
+                return new DepartmentResponse(department.getDpName(), department.getDpID());
             }).collect(Collectors.toList());
         } catch (EmptyResultDataAccessException ex) {
             throw new DomainException("Empty table");
