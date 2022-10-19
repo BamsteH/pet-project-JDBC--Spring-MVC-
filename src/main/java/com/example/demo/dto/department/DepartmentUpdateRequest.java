@@ -1,15 +1,16 @@
-package com.example.demo.entity;
+package com.example.demo.dto.department;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Department {
-
+public class DepartmentUpdateRequest {
+    @NonNull
     private long id;
+    @NonNull
     private String name;
-
 }

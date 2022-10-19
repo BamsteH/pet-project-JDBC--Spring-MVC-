@@ -6,11 +6,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class DepartmentRepository {
+public class DepartmentRepository implements CrudRepository<Department, Long> {
 
     private final JdbcTemplate template;
 
@@ -18,31 +20,51 @@ public class DepartmentRepository {
         this.template = template;
     }
 
-
-    public void create(Department department) {
+    @Override
+    @Transactional
+    public Department create(Department department) {
         String sql = "INSERT INTO Departments(dpName) VALUES (?)";
         template.update(sql,
-                department.getDpName());
+                department.getName());
+        sql = "SELECT " +
+                "Departments.dpID AS id, " +
+                "Departments.dpName AS name " +
+                "FROM Departments WHERE dpID=LAST_INSERT_ID()";
+        return template.queryForObject(sql,
+                BeanPropertyRowMapper.newInstance(Department.class));
     }
 
-    public Department getById(long id) throws EmptyResultDataAccessException {
+    @Override
+    public Optional<Department> getById(Long aLong) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Department> getAll() {
+        return null;
+    }
+
+    public Optional<Department> getById(long id) throws EmptyResultDataAccessException {
         String sql = "SELECT * FROM Departments WHERE dpID=?";
         try {
-            return template.queryForObject(sql,
-                    BeanPropertyRowMapper.newInstance(Department.class), id);
-        } catch (EmptyResultDataAccessException exception){
+            return Optional.ofNullable(template.queryForObject(sql,
+                    BeanPropertyRowMapper.newInstance(Department.class), id));
+        } catch (EmptyResultDataAccessException exception) {
             throw new DomainException("department doesn't exist");
         }
     }
 
-    public void updateDepartment(Department department) {
+    @Override
+    public Optional<Department> update(Department department) {
         String sql = "UPDATE Departments SET dpName=? WHERE dpID=?";
         template.update(sql,
-                department.getDpName(),
-                department.getDpID());
+                department.getName(),
+                department.getId());
+        return getById(department.getId());
     }
 
-    public boolean deleteDepartment(long id) {
+    @Override
+    public boolean delete(Long id) {
         String sql = "delete from Departments where dpID = ?";
         return this.template.update(sql, id) > 0;
     }
@@ -54,5 +76,4 @@ public class DepartmentRepository {
                 minLimit,
                 maxLimit);
     }
-
 }

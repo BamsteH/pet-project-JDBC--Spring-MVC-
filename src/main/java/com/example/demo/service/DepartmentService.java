@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.department.DepartmentResponse;
+import com.example.demo.dto.department.DepartmentUpdateRequest;
 import com.example.demo.entity.Department;
 import com.example.demo.exceptions.DomainException;
 import com.example.demo.repository.DepartmentRepository;
+import com.example.demo.utils.transferObject.DepartmentTransferObject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.demo.utils.PaginationPointCalculator.getStartPointLimit;
+import static com.example.demo.utils.transferObject.DepartmentTransferObject.fromUpdateRequest;
+import static com.example.demo.utils.transferObject.DepartmentTransferObject.toResponse;
 
 @Service
 public class DepartmentService {
@@ -21,45 +25,35 @@ public class DepartmentService {
         this.repository = repository;
     }
 
-    public String getName(long id) {
-        try {
-            return this.repository.getById(id).getDpName();
-        } catch (EmptyResultDataAccessException ex) {
-            throw new DomainException("Invalid Id");
-        }
-    }
-
     public DepartmentResponse getById(long id) {
-        try {
-            Department department = this.repository.getById(id);
-            return new DepartmentResponse(department.getDpName(), department.getDpID());
-        } catch (EmptyResultDataAccessException ex) {
-            throw new DomainException("Invalid Department Id");
-        }
+        return toResponse(this.repository
+                .getById(id).orElseThrow(() -> {
+                    throw new DomainException("department doesn't exist");
+                }));
     }
 
-    public void createNewDepartment(Department department) {
-        this.repository.create(department);
+    public DepartmentResponse create(Department department) {
+        return toResponse(this.repository.create(department));
     }
 
-    public void updateDepartment(Department department) {
-        this.repository.updateDepartment(department);
+    public DepartmentResponse update(DepartmentUpdateRequest request) {
+        return toResponse(this.repository
+                .update(fromUpdateRequest(request))
+                .orElseThrow(() -> {
+                    throw new DomainException("can't update department");
+                }));
     }
 
-    public boolean deleteDepartment(long id) {
-        return this.repository.deleteDepartment(id);
+    public boolean delete(long id) {
+        return this.repository.delete(id);
     }
 
     public List<DepartmentResponse> getAll(int page, int limit) {
         int startPoint = getStartPointLimit(page, limit);
-        try {
-            List<Department> all = this.repository.getAll(startPoint, startPoint + limit);
-
-            return all.stream().map(department -> {
-                return new DepartmentResponse(department.getDpName(), department.getDpID());
-            }).collect(Collectors.toList());
-        } catch (EmptyResultDataAccessException ex) {
-            throw new DomainException("Empty table");
-        }
+        return this.repository
+                .getAll(startPoint, startPoint + limit)
+                .stream()
+                .map(DepartmentTransferObject::toResponse)
+                .collect(Collectors.toList());
     }
 }

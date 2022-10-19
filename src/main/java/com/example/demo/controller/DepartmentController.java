@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.department.DepartmentResponse;
+import com.example.demo.dto.department.DepartmentUpdateRequest;
 import com.example.demo.entity.Department;
 import com.example.demo.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class DepartmentController {
 
     @PostMapping()
     public void createDepartment(@RequestBody Department department){
-        this.service.createNewDepartment(department);
+        this.service.create(department);
     }
 
     @PutMapping()
-    public void updateDepartment(@RequestBody Department department){
-        this.service.updateDepartment(department);
+    public DepartmentResponse updateDepartment(@RequestBody DepartmentUpdateRequest request){
+        return this.service.update(request);
     }
 
     @GetMapping("/{id}")
@@ -40,7 +41,7 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     public boolean deleteDepartment(@PathVariable long id){
-       return this.service.deleteDepartment(id);
+       return this.service.delete(id);
     }
 
 }
