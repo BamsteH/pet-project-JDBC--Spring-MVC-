@@ -7,6 +7,7 @@ import com.example.demo.entity.Employee;
 import com.example.demo.exceptions.DomainException;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.utils.transferObject.EmployeeTransferObj;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +17,13 @@ import static com.example.demo.utils.PaginationPointCalculator.getStartPointLimi
 import static com.example.demo.utils.transferObject.EmployeeTransferObj.*;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository repository;
-    private final DepartmentService departmentService;
-
-    public EmployeeService(EmployeeRepository repository,
-                           DepartmentService departmentService) {
-        this.repository = repository;
-        this.departmentService = departmentService;
-    }
 
     public EmployeeResponse create(EmployeeAddRequest request) {
-        return EmployeeTransferObj.toEmployeeResponse(this.repository
+        return toEmployeeResponse(this.repository
                 .create(fromEmployeeAddRequest(request)));
     }
 
@@ -51,9 +46,10 @@ public class EmployeeService {
                 .getByStartsWith(startsWith, pointLimit, pointLimit + limit));
     }
 
-    public EmployeeResponse update(EmployeeUpdateRequest request) {
+    public EmployeeResponse update(EmployeeUpdateRequest request, Long id) {
         return toEmployeeResponse(this.repository
-                .update(fromEmployeeUpdateRequest(request)).orElseThrow(() -> new DomainException("Employee doesn't exist")));
+                .update(fromEmployeeUpdateRequest(request), id)
+                .orElseThrow(() -> new DomainException("Employee doesn't exist")));
     }
 
     public boolean delete(long id) {

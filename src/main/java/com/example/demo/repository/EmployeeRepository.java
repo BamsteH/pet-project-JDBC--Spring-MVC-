@@ -109,7 +109,7 @@ public class EmployeeRepository implements CrudRepository<Employee, Long> {
 
 
     @Override
-    public Optional<Employee> update(Employee employee) {
+    public Optional<Employee> update(Employee employee, Long id) {
         String sql = "UPDATE Employees SET empName=?, " +
                 "empActive=?," +
                 "emp_DpID=? " +
@@ -118,7 +118,7 @@ public class EmployeeRepository implements CrudRepository<Employee, Long> {
                 employee.getName(),
                 employee.isActive(),
                 employee.getDepartmentId(),
-                employee.getId());
+                id);
         return getById(employee.getId());
     }
 

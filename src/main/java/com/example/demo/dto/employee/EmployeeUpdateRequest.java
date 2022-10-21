@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeUpdateRequest {
 
-    private long id;
     private String name;
     private boolean active;
     private long departmentId;

@@ -1,7 +1,11 @@
 package com.example.demo.exceptions;
 
-public class EntityNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
+public class EntityNotFoundException extends DomainException {
 
-
+    @Override
+    public Integer getCodeError() {
+        return HttpStatus.NOT_FOUND.value();
+    }
 }

@@ -37,13 +37,14 @@ public class EmployeeController {
     @GetMapping("/search")
     public List<EmployeeResponse> readByStartsWith(@RequestParam String startWith,
                                                    @RequestParam(defaultValue = "10") int limit,
-                                                   @RequestParam(defaultValue = "1")  int page) {
+                                                   @RequestParam(defaultValue = "1") int page) {
         return this.service.readByStartsWith(startWith, page, limit);
     }
 
-    @PutMapping("")
-    public EmployeeResponse updateEmployee(@RequestBody EmployeeUpdateRequest request) {
-        return this.service.update(request);
+    @PutMapping("/{id}")
+    public EmployeeResponse updateEmployee(@PathVariable long id,
+                                           @RequestBody EmployeeUpdateRequest request) {
+        return this.service.update(request, id);
     }
 
     @DeleteMapping("{id}")

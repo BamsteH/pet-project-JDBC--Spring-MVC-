@@ -4,28 +4,27 @@ import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.dto.department.DepartmentUpdateRequest;
 import com.example.demo.entity.Department;
 import com.example.demo.service.DepartmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/department")
+@RequiredArgsConstructor
 public class DepartmentController {
 
     private final DepartmentService service;
-
-    public DepartmentController(DepartmentService service) {
-        this.service = service;
-    }
 
     @PostMapping()
     public void createDepartment(@RequestBody Department department){
         this.service.create(department);
     }
 
-    @PutMapping()
-    public DepartmentResponse updateDepartment(@RequestBody DepartmentUpdateRequest request){
-        return this.service.update(request);
+    @PutMapping("/{id}")
+    public DepartmentResponse updateDepartment(@PathVariable long id,
+                                               @RequestBody DepartmentUpdateRequest request){
+        return this.service.update(request, id);
     }
 
     @GetMapping("/{id}")

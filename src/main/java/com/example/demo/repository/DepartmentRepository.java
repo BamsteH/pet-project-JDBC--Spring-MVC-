@@ -55,11 +55,11 @@ public class DepartmentRepository implements CrudRepository<Department, Long> {
     }
 
     @Override
-    public Optional<Department> update(Department department) {
+    public Optional<Department> update(Department department, Long id) {
         String sql = "UPDATE Departments SET dpName=? WHERE dpID=?";
         template.update(sql,
                 department.getName(),
-                department.getId());
+                id);
         return getById(department.getId());
     }
 

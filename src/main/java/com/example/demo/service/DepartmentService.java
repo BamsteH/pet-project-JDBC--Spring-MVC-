@@ -26,19 +26,19 @@ public class DepartmentService {
     }
 
     public DepartmentResponse getById(long id) {
-        return toResponse(this.repository
-                .getById(id).orElseThrow(() -> {
-                    throw new DomainException("department doesn't exist");
-                }));
+        return this.repository
+                .getById(id)
+                .map(DepartmentTransferObject::toResponse)
+                .orElseThrow(() -> new DomainException("department doesn't exist"));
     }
 
     public DepartmentResponse create(Department department) {
         return toResponse(this.repository.create(department));
     }
 
-    public DepartmentResponse update(DepartmentUpdateRequest request) {
+    public DepartmentResponse update(DepartmentUpdateRequest request, Long id) {
         return toResponse(this.repository
-                .update(fromUpdateRequest(request))
+                .update(fromUpdateRequest(request), id)
                 .orElseThrow(() -> {
                     throw new DomainException("can't update department");
                 }));

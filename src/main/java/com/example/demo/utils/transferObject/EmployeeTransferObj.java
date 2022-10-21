@@ -19,12 +19,8 @@ public class EmployeeTransferObj {
 
 
     public static List<EmployeeResponse> toListEmployeeResponse(List<Employee> employees) {
-        return employees.stream().map(employee -> {
-            return new EmployeeResponse(employee.getName(),
-                    employee.getId(),
-                    employee.isActive(),
-                    employee.getDepartmentName());
-        }).collect(Collectors.toList());
+        return employees.stream().map(EmployeeTransferObj::toEmployeeResponse)
+        .collect(Collectors.toList());
     }
 
     public static Employee fromEmployeeAddRequest(EmployeeAddRequest request) {
@@ -34,11 +30,9 @@ public class EmployeeTransferObj {
     }
 
     public static Employee fromEmployeeUpdateRequest(EmployeeUpdateRequest request) {
-        return new Employee(request.getId(),
-                request.getName(),
+        return new Employee(request.getName(),
                 request.isActive(),
-                request.getDepartmentId(),
-                null);
+                request.getDepartmentId());
     }
 
 }

@@ -19,7 +19,7 @@ public interface CrudRepository<T, ID> {
 
     List<T> getAll(int minLimit, int maxLimit);
 
-    Optional<T> update(T t);
+    Optional<T> update(T t, ID id);
 
     boolean delete(ID id);
 
