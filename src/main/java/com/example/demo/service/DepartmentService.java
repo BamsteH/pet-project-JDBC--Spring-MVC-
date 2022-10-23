@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.department.DepartmentAddRequest;
 import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.dto.department.DepartmentUpdateRequest;
 import com.example.demo.entity.Department;
@@ -13,8 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.demo.utils.PaginationPointCalculator.getStartPointLimit;
-import static com.example.demo.utils.transferObject.DepartmentTransferObject.fromUpdateRequest;
-import static com.example.demo.utils.transferObject.DepartmentTransferObject.toResponse;
+import static com.example.demo.utils.transferObject.DepartmentTransferObject.*;
 
 @Service
 public class DepartmentService {
@@ -32,13 +32,13 @@ public class DepartmentService {
                 .orElseThrow(() -> new DomainException("department doesn't exist"));
     }
 
-    public DepartmentResponse create(Department department) {
-        return toResponse(this.repository.create(department));
+    public DepartmentResponse create(DepartmentAddRequest request) {
+        return toResponse(this.repository.create(fromAddRequest(request)));
     }
 
     public DepartmentResponse update(DepartmentUpdateRequest request, Long id) {
         return toResponse(this.repository
-                .update(fromUpdateRequest(request), id)
+                .update(fromUpdateRequest(request, id), id)
                 .orElseThrow(() -> {
                     throw new DomainException("can't update department");
                 }));

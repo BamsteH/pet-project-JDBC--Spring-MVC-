@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.department.DepartmentAddRequest;
 import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.dto.department.DepartmentUpdateRequest;
 import com.example.demo.entity.Department;
@@ -17,8 +18,8 @@ public class DepartmentController {
     private final DepartmentService service;
 
     @PostMapping()
-    public void createDepartment(@RequestBody Department department){
-        this.service.create(department);
+    public DepartmentResponse createDepartment(@RequestBody DepartmentAddRequest request){
+        return this.service.create(request);
     }
 
     @PutMapping("/{id}")

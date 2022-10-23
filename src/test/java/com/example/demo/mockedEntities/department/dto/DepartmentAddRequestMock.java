@@ -1,0 +1,16 @@
+package com.example.demo.mockedEntities.department.dto;
+
+import com.example.demo.dto.department.DepartmentAddRequest;
+
+public class DepartmentAddRequestMock {
+
+    public static DepartmentAddRequest departmentAddRequest1(){
+        return new DepartmentAddRequest("DefaultDepartment");
+    }
+
+    public static DepartmentAddRequest departmentAddRequest2(){
+        return new DepartmentAddRequest("Another Department");
+    }
+
+
+}

@@ -9,8 +9,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentUpdateRequest {
-    @NonNull
-    private long id;
+
     @NonNull
     private String name;
 }

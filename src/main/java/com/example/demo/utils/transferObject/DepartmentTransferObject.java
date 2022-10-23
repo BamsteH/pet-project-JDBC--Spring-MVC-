@@ -17,8 +17,8 @@ public class DepartmentTransferObject {
         return new DepartmentResponse(department.getName(), department.getId());
     }
 
-    public static Department fromUpdateRequest(DepartmentUpdateRequest request){
-        return new Department(request.getId(), request.getName());
+    public static Department fromUpdateRequest(DepartmentUpdateRequest request, Long id){
+        return new Department(id, request.getName());
     }
 
 }
