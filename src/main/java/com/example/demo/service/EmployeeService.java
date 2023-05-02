@@ -20,8 +20,7 @@ public class EmployeeService {
   private final EmployeeRepository repository;
 
   public EmployeeResponse create(EmployeeAddRequest request) {
-    return toEmployeeResponse(this.repository
-            .create(fromEmployeeAddRequest(request)));
+    return toEmployeeResponse(this.repository.create(fromEmployeeAddRequest(request)));
   }
 
   public EmployeeResponse readEmployeeById(long id) {

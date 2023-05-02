@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.employee.EmployeeAddRequest;
 import com.example.demo.dto.employee.EmployeeResponse;
 import com.example.demo.dto.employee.EmployeeUpdateRequest;
+import com.example.demo.events.message.notification.NewEmployeeEventMessage;
 import com.example.demo.service.EmployeeService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,14 +15,27 @@ import java.util.List;
 public class EmployeeController {
 
   private final EmployeeService service;
+  private final ApplicationEventPublisher publisher;
 
-  public EmployeeController(EmployeeService service) {
+  public EmployeeController(
+          EmployeeService service,
+          ApplicationEventPublisher publisher
+  ) {
     this.service = service;
+    this.publisher = publisher;
   }
 
   @PostMapping()
   public EmployeeResponse createEmployee(@RequestBody EmployeeAddRequest employee) {
-    return this.service.create(employee);
+    EmployeeResponse newEmployee = this.service.create(employee);
+
+    Object message = new NewEmployeeEventMessage(
+            newEmployee.getId(),
+            newEmployee.getDepartmentName()
+    );
+    this.publisher.publishEvent(message);
+
+    return newEmployee;
   }
 
   @GetMapping("/{id}")

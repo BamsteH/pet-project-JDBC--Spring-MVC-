@@ -30,7 +30,8 @@ public class EmployeeRepository implements CrudRepository<Employee, Long> {
       template.update(sql,
               employee.getName(),
               employee.isActive(),
-              employee.getDepartmentId());
+              employee.getDepartmentId()
+      );
       return template.queryForObject("SELECT " +
                       "Employees.empId AS id," +
                       "Employees.empName AS name," +
