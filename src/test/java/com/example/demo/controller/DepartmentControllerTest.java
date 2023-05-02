@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.department.DepartmentAddRequest;
 import com.example.demo.dto.department.DepartmentResponse;
 import com.example.demo.dto.department.DepartmentUpdateRequest;
+import com.example.demo.search.department.SearchDepartmentFactory;
 import com.example.demo.service.DepartmentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,11 +20,13 @@ class DepartmentControllerTest {
 
     private DepartmentController controller;
     private DepartmentService service;
+    private SearchDepartmentFactory searchDepartmentFactory;
 
     @BeforeEach
     public void before() {
         this.service = mock(DepartmentService.class);
-        this.controller = new DepartmentController(this.service);
+        this.searchDepartmentFactory = mock(SearchDepartmentFactory.class);
+        this.controller = new DepartmentController(this.service, this.searchDepartmentFactory);
     }
 
 

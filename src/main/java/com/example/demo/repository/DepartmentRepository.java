@@ -14,66 +14,66 @@ import java.util.Optional;
 @Repository
 public class DepartmentRepository implements CrudRepository<Department, Long> {
 
-    private final JdbcTemplate template;
+  private final JdbcTemplate template;
 
-    public DepartmentRepository(JdbcTemplate template) {
-        this.template = template;
-    }
+  public DepartmentRepository(JdbcTemplate template) {
+    this.template = template;
+  }
 
-    @Override
-    @Transactional
-    public Department create(Department department) {
-        String sql = "INSERT INTO Departments(dpName) VALUES (?)";
-        template.update(sql,
-                department.getName());
-        sql = "SELECT " +
-                "Departments.dpID AS id, " +
-                "Departments.dpName AS name " +
-                "FROM Departments WHERE dpID=LAST_INSERT_ID()";
-        return template.queryForObject(sql,
-                BeanPropertyRowMapper.newInstance(Department.class));
-    }
+  @Override
+  @Transactional
+  public Department create(Department department) {
+    String sql = "INSERT INTO Departments(dpName) VALUES (?)";
+    template.update(sql,
+            department.getName());
+    sql = "SELECT " +
+            "Departments.dpID AS id, " +
+            "Departments.dpName AS name " +
+            "FROM Departments WHERE dpID=LAST_INSERT_ID()";
+    return template.queryForObject(sql,
+            BeanPropertyRowMapper.newInstance(Department.class));
+  }
 
-    @Override
-    public Optional<Department> getById(Long aLong) {
-        return Optional.empty();
-    }
+  @Override
+  public Optional<Department> getById(Long aLong) {
+    return Optional.empty();
+  }
 
-    @Override
-    public List<Department> getAll() {
-        return null;
-    }
+  @Override
+  public List<Department> getAll() {
+    return null;
+  }
 
-    public Optional<Department> getById(long id) throws EmptyResultDataAccessException {
-        String sql = "SELECT * FROM Departments WHERE dpID=?";
-        try {
-            return Optional.ofNullable(template.queryForObject(sql,
-                    BeanPropertyRowMapper.newInstance(Department.class), id));
-        } catch (EmptyResultDataAccessException exception) {
-            throw new DomainException("department doesn't exist");
-        }
+  public Optional<Department> getById(long id) throws EmptyResultDataAccessException {
+    String sql = "SELECT * FROM Departments WHERE dpID=?";
+    try {
+      return Optional.ofNullable(template.queryForObject(sql,
+              BeanPropertyRowMapper.newInstance(Department.class), id));
+    } catch (EmptyResultDataAccessException exception) {
+      throw new DomainException("department doesn't exist");
     }
+  }
 
-    @Override
-    public Optional<Department> update(Department department, Long id) {
-        String sql = "UPDATE Departments SET dpName=? WHERE dpID=?";
-        template.update(sql,
-                department.getName(),
-                id);
-        return getById(department.getId());
-    }
+  @Override
+  public Optional<Department> update(Department department, Long id) {
+    String sql = "UPDATE Departments SET dpName=? WHERE dpID=?";
+    template.update(sql,
+            department.getName(),
+            id);
+    return getById(department.getId());
+  }
 
-    @Override
-    public boolean delete(Long id) {
-        String sql = "delete from Departments where dpID = ?";
-        return this.template.update(sql, id) > 0;
-    }
+  @Override
+  public boolean delete(Long id) {
+    String sql = "delete from Departments where dpID = ?";
+    return this.template.update(sql, id) > 0;
+  }
 
-    public List<Department> getAll(int minLimit, int maxLimit) throws EmptyResultDataAccessException {
-        String sql = "SELECT * FROM Departments LIMIT ?,?";
-        return template.query(sql,
-                BeanPropertyRowMapper.newInstance(Department.class),
-                minLimit,
-                maxLimit);
-    }
+  public List<Department> getAll(int minLimit, int maxLimit) throws EmptyResultDataAccessException {
+    String sql = "SELECT * FROM Departments LIMIT ?,?";
+    return template.query(sql,
+            BeanPropertyRowMapper.newInstance(Department.class),
+            minLimit,
+            maxLimit);
+  }
 }

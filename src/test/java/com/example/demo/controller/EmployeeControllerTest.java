@@ -6,6 +6,7 @@ import com.example.demo.service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
@@ -18,11 +19,13 @@ class EmployeeControllerTest {
 
     private EmployeeController controller;
     private EmployeeService service;
+    private ApplicationEventPublisher publisher;
 
     @BeforeEach
     public void before() {
         this.service = mock(EmployeeService.class);
-        this.controller = new EmployeeController(this.service);
+        this.publisher = mock(ApplicationEventPublisher.class);
+        this.controller = new EmployeeController(this.service, this.publisher);
     }
 
     @Test

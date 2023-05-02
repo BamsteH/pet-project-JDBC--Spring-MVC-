@@ -9,9 +9,9 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeAddRequest {
-    @NonNull
-    private String employeeName;
-    private boolean active;
-    private long departmentId;
+  @NonNull
+  private String employeeName;
+  private boolean active;
+  private long departmentId;
 
 }

@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.employee.EmployeeAddRequest;
 import com.example.demo.dto.employee.EmployeeResponse;
 import com.example.demo.dto.employee.EmployeeUpdateRequest;
+import com.example.demo.events.message.notification.NewEmployeeEventMessage;
 import com.example.demo.service.EmployeeService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,43 +14,56 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    private final EmployeeService service;
+  private final EmployeeService service;
+  private final ApplicationEventPublisher publisher;
 
-    public EmployeeController(EmployeeService service) {
-        this.service = service;
-    }
+  public EmployeeController(
+          EmployeeService service,
+          ApplicationEventPublisher publisher
+  ) {
+    this.service = service;
+    this.publisher = publisher;
+  }
 
-    @PostMapping()
-    public EmployeeResponse createEmployee(@RequestBody EmployeeAddRequest employee) {
-        return this.service.create(employee);
-    }
+  @PostMapping()
+  public EmployeeResponse createEmployee(@RequestBody EmployeeAddRequest employee) {
+    EmployeeResponse newEmployee = this.service.create(employee);
 
-    @GetMapping("/{id}")
-    public EmployeeResponse readEmployeeById(@PathVariable long id) {
-        return this.service.readEmployeeById(id);
-    }
+    Object message = new NewEmployeeEventMessage(
+            newEmployee.getId(),
+            newEmployee.getDepartmentName()
+    );
+    this.publisher.publishEvent(message);
 
-    @GetMapping("/all")
-    public List<EmployeeResponse> readAllEmployee(@RequestParam(defaultValue = "10") int limit,
-                                                  @RequestParam(defaultValue = "1") int page) {
-        return this.service.readAllEmployee(page, limit);
-    }
+    return newEmployee;
+  }
 
-    @GetMapping("/search")
-    public List<EmployeeResponse> readByStartsWith(@RequestParam String startWith,
-                                                   @RequestParam(defaultValue = "10") int limit,
-                                                   @RequestParam(defaultValue = "1") int page) {
-        return this.service.readByStartsWith(startWith, page, limit);
-    }
+  @GetMapping("/{id}")
+  public EmployeeResponse readEmployeeById(@PathVariable long id) {
+    return this.service.readEmployeeById(id);
+  }
 
-    @PutMapping("/{id}")
-    public EmployeeResponse updateEmployee(@PathVariable long id,
-                                           @RequestBody EmployeeUpdateRequest request) {
-        return this.service.update(request, id);
-    }
+  @GetMapping("/all")
+  public List<EmployeeResponse> readAllEmployee(@RequestParam(defaultValue = "10") int limit,
+                                                @RequestParam(defaultValue = "1") int page) {
+    return this.service.readAllEmployee(page, limit);
+  }
 
-    @DeleteMapping("{id}")
-    public boolean deleteEmployeeById(@PathVariable long id) {
-        return this.service.delete(id);
-    }
+  @GetMapping("/search")
+  public List<EmployeeResponse> readByStartsWith(@RequestParam String startWith,
+                                                 @RequestParam(defaultValue = "10") int limit,
+                                                 @RequestParam(defaultValue = "1") int page) {
+    return this.service.readByStartsWith(startWith, page, limit);
+  }
+
+  @PutMapping("/{id}")
+  public EmployeeResponse updateEmployee(@PathVariable long id,
+                                         @RequestBody EmployeeUpdateRequest request) {
+    return this.service.update(request, id);
+  }
+
+  @DeleteMapping("{id}")
+  public boolean deleteEmployeeById(@PathVariable long id) {
+    return this.service.delete(id);
+  }
 }

@@ -11,24 +11,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    private final MessageSource messageSource;
+  private final MessageSource messageSource;
 
-    public ControllerAdvisor(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
+  public ControllerAdvisor(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
-    }
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(value = {DomainException.class})
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(DomainException e) {
-        return ResponseEntity.status(e.getCodeError()).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
-    }
+  @ExceptionHandler(value = {DomainException.class})
+  public ResponseEntity<ErrorResponse> handleEntityNotFoundException(DomainException e) {
+    return ResponseEntity.status(e.getCodeError()).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+  }
 }

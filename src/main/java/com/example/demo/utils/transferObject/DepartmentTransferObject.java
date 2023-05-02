@@ -7,18 +7,18 @@ import com.example.demo.entity.Department;
 
 public class DepartmentTransferObject {
 
-    public static Department fromAddRequest(DepartmentAddRequest request){
-        Department department = new Department();
-        department.setName(request.getName());
-        return department;
-    }
+  public static Department fromAddRequest(DepartmentAddRequest request) {
+    Department department = new Department();
+    department.setName(request.getName());
+    return department;
+  }
 
-    public static DepartmentResponse toResponse(Department department){
-        return new DepartmentResponse(department.getName(), department.getId());
-    }
+  public static DepartmentResponse toResponse(Department department) {
+    return new DepartmentResponse(department.getName(), department.getId());
+  }
 
-    public static Department fromUpdateRequest(DepartmentUpdateRequest request, Long id){
-        return new Department(id, request.getName());
-    }
+  public static Department fromUpdateRequest(DepartmentUpdateRequest request, Long id) {
+    return new Department(id, request.getName());
+  }
 
 }

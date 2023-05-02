@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class EntityNotFoundException extends DomainException {
 
-    @Override
-    public Integer getCodeError() {
-        return HttpStatus.NOT_FOUND.value();
-    }
+  @Override
+  public Integer getCodeError() {
+    return HttpStatus.NOT_FOUND.value();
+  }
 }
