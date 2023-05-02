@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class DepartmentAddRequest {
 
-    private String name;
+  private String name;
 
 }

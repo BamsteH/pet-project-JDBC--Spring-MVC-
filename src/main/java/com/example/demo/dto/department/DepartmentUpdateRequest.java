@@ -10,6 +10,6 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class DepartmentUpdateRequest {
 
-    @NonNull
-    private String name;
+  @NonNull
+  private String name;
 }

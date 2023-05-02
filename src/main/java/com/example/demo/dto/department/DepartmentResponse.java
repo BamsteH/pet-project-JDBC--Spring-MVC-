@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class DepartmentResponse {
 
-    private String name;
-    private long id;
+  private String name;
+  private long id;
 
 }

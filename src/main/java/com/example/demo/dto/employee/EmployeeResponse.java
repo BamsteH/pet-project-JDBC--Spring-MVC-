@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeResponse {
 
-    private String nameEmployee;
-    private long id;
-    private boolean isActive;
-    private String departmentName;
+  private String nameEmployee;
+  private long id;
+  private boolean isActive;
+  private String departmentName;
 
 }

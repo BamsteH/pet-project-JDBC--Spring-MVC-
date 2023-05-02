@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeUpdateRequest {
 
-    private String name;
-    private boolean active;
-    private long departmentId;
+  private String name;
+  private boolean active;
+  private long departmentId;
 
 }
