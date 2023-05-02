@@ -51,4 +51,9 @@ public class EmployeeService {
   public boolean delete(long id) {
     return this.repository.delete(id);
   }
+
+  public List<EmployeeResponse> readEmployeeByDepartmentId(long departmentId) {
+    return toListEmployeeResponse(this.repository.getByDepartmentId(departmentId));
+  }
+
 }

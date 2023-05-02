@@ -128,4 +128,22 @@ public class EmployeeRepository implements CrudRepository<Employee, Long> {
     String sql = "DELETE FROM Employees WHERE empId = ?";
     return this.template.update(sql, id) > 0;
   }
+
+  public List<Employee> getByDepartmentId(long departmentId) {
+    String sql = "SELECT " +
+            "Employees.empId AS id," +
+            "Employees.empName AS name," +
+            "Employees.empActive AS active, " +
+            "Departments.dpName AS departmentName " +
+            "FROM Employees " +
+            "INNER JOIN " +
+            "Departments ON Employees.emp_dpID = Departments.dpID " +
+            "WHERE emp_dpID=?";
+
+    return template.query(
+            sql,
+            BeanPropertyRowMapper.newInstance(Employee.class),
+            departmentId
+    );
+  }
 }
