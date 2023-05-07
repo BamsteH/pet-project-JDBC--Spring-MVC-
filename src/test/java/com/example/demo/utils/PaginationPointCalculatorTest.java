@@ -1,9 +1,8 @@
 package com.example.demo.utils;
 
+import com.example.demo.application.utils.PaginationPointCalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PaginationPointCalculatorTest {
 

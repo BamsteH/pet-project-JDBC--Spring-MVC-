@@ -1,6 +1,6 @@
 package com.example.demo.mockedEntities.department.dto;
 
-import com.example.demo.dto.department.DepartmentAddRequest;
+import com.example.demo.department.dto.request.DepartmentAddRequest;
 
 public class DepartmentAddRequestMock {
 
