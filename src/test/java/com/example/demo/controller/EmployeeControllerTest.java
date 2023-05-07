@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.employee.EmployeeAddRequest;
-import com.example.demo.dto.employee.EmployeeResponse;
-import com.example.demo.service.EmployeeService;
+import com.example.demo.employee.dto.request.EmployeeAddRequest;
+import com.example.demo.employee.dto.response.EmployeeResponse;
+import com.example.demo.employee.controller.EmployeeController;
+import com.example.demo.employee.service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

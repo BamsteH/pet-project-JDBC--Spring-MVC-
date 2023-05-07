@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.department.DepartmentResponse;
-import com.example.demo.repository.DepartmentRepository;
-import com.example.demo.utils.PaginationPointCalculator;
-import com.example.demo.utils.transferObject.DepartmentTransferObject;
+import com.example.demo.department.service.DepartmentService;
+import com.example.demo.department.dto.response.DepartmentResponse;
+import com.example.demo.department.repository.DepartmentRepository;
+import com.example.demo.application.utils.PaginationPointCalculator;
+import com.example.demo.application.utils.transferObject.DepartmentTransferObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

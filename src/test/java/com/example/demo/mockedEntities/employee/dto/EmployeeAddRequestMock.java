@@ -1,6 +1,6 @@
 package com.example.demo.mockedEntities.employee.dto;
 
-import com.example.demo.dto.employee.EmployeeAddRequest;
+import com.example.demo.employee.dto.request.EmployeeAddRequest;
 
 public class EmployeeAddRequestMock {
 

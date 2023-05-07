@@ -1,6 +1,6 @@
 package com.example.demo.mockedEntities.employee;
 
-import com.example.demo.entity.Employee;
+import com.example.demo.employee.entity.Employee;
 
 public class EmployeeMock {
 

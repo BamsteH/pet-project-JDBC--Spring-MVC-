@@ -1,6 +1,6 @@
 package com.example.demo.mockedEntities.department.dto;
 
-import com.example.demo.dto.department.DepartmentResponse;
+import com.example.demo.department.dto.response.DepartmentResponse;
 
 public class DepartmentResponseMock {
 

@@ -1,11 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.employee.EmployeeResponse;
-import com.example.demo.dto.employee.EmployeeUpdateRequest;
-import com.example.demo.mockedEntities.employee.dto.EmployeeUpdateRequestMock;
-import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.utils.PaginationPointCalculator;
-import com.example.demo.utils.transferObject.EmployeeTransferObj;
+import com.example.demo.employee.dto.response.EmployeeResponse;
+import com.example.demo.employee.repository.EmployeeRepository;
+import com.example.demo.employee.service.EmployeeService;
+import com.example.demo.application.utils.PaginationPointCalculator;
+import com.example.demo.application.utils.transferObject.EmployeeTransferObj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

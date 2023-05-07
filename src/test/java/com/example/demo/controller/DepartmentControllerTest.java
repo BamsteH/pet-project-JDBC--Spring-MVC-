@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.department.DepartmentAddRequest;
-import com.example.demo.dto.department.DepartmentResponse;
-import com.example.demo.dto.department.DepartmentUpdateRequest;
-import com.example.demo.search.department.SearchDepartmentFactory;
-import com.example.demo.service.DepartmentService;
+import com.example.demo.department.controller.DepartmentController;
+import com.example.demo.department.dto.request.DepartmentAddRequest;
+import com.example.demo.department.dto.response.DepartmentResponse;
+import com.example.demo.department.dto.request.DepartmentUpdateRequest;
+import com.example.demo.department.search.SearchDepartmentFactory;
+import com.example.demo.department.service.DepartmentService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
