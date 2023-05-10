@@ -51,7 +51,15 @@ public class EmployeeRepository implements CrudRepository<Employee, Long> {
 
   @Override
   public List<Employee> getAll() {
-    return null;
+    String sql = "SELECT " +
+            "Employees.empId AS id," +
+            "Employees.empName AS name," +
+            "Employees.empActive AS active, " +
+            "Departments.dpName AS departmentName " +
+            "FROM Employees " +
+            "INNER JOIN " +
+            "Departments ON Employees.emp_dpID = Departments.dpID ";
+    return template.query(sql, BeanPropertyRowMapper.newInstance(Employee.class));
   }
 
   @Override

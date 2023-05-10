@@ -4,16 +4,10 @@ import com.example.demo.application.notification.NewEmployeeEventMessage;
 import com.example.demo.employee.dto.request.EmployeeAddRequest;
 import com.example.demo.employee.dto.request.EmployeeUpdateRequest;
 import com.example.demo.employee.dto.response.EmployeeResponse;
+import com.example.demo.employee.publisher.EmployeeMessageProducer;
 import com.example.demo.employee.service.EmployeeService;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 import java.util.List;
 
@@ -23,16 +17,16 @@ public class EmployeeController {
 
   private final EmployeeService service;
   private final ApplicationEventPublisher publisher;
-  private final RabbitTemplate rabbitTemplate;
+  private final EmployeeMessageProducer messageProducer;
 
   public EmployeeController(
           EmployeeService service,
           ApplicationEventPublisher publisher,
-          RabbitTemplate rabbitTemplate
+          EmployeeMessageProducer messageProducer
   ) {
     this.service = service;
     this.publisher = publisher;
-    this.rabbitTemplate = rabbitTemplate;
+    this.messageProducer = messageProducer;
   }
 
   @PostMapping()
@@ -79,18 +73,18 @@ public class EmployeeController {
 
   @PatchMapping("/accrue-salary")
   public void accrueSalary() {
-    EmployeeResponse employeeResponse = new EmployeeResponse("nameEmployee", 1, true, "departmentName");
+    messageProducer.sendMessage(
+            this.service.readAllEmployee().toArray(new EmployeeResponse[0])
+    );
+  }
 
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      String jsonEmployee = objectMapper.writeValueAsString(employeeResponse);
-      rabbitTemplate.convertAndSend(
-              "example-demo-queue",
-              jsonEmployee
-      );
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
+  @PatchMapping("/accrue-salary/{userId}")
+  public void accrueSalary(
+          @PathVariable long userId
+  ) {
+    messageProducer.sendMessage(
+            this.service.readEmployeeById(userId)
+    );
   }
 
 }

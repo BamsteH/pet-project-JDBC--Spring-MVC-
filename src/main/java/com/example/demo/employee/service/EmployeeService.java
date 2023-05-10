@@ -40,6 +40,12 @@ public class EmployeeService {
                     pointLimit + limit));
   }
 
+  public List<EmployeeResponse> readAllEmployee() {
+    return Assembler.toListEmployeeResponse(this.repository.getAll());
+  }
+
+
+
   public List<EmployeeResponse> readByStartsWith(String startsWith, int page, int limit) {
     int pointLimit = getStartPointLimit(page, limit);
     return Assembler.toListEmployeeResponse(this.repository

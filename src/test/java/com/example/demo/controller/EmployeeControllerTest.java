@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.employee.dto.request.EmployeeAddRequest;
 import com.example.demo.employee.dto.response.EmployeeResponse;
 import com.example.demo.employee.controller.EmployeeController;
+import com.example.demo.employee.publisher.EmployeeMessageProducer;
 import com.example.demo.employee.service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +23,14 @@ class EmployeeControllerTest {
     private EmployeeController controller;
     private EmployeeService service;
     private ApplicationEventPublisher publisher;
-    private RabbitTemplate rabbitTemplate;
+    private EmployeeMessageProducer employeeMessageProducer;
 
     @BeforeEach
     public void before() {
         this.service = mock(EmployeeService.class);
         this.publisher = mock(ApplicationEventPublisher.class);
-        this.rabbitTemplate = mock(RabbitTemplate.class);
-        this.controller = new EmployeeController(this.service, this.publisher, rabbitTemplate);
+        this.employeeMessageProducer = mock(EmployeeMessageProducer.class);
+        this.controller = new EmployeeController(this.service, this.publisher, this.employeeMessageProducer);
     }
 
     @Test
