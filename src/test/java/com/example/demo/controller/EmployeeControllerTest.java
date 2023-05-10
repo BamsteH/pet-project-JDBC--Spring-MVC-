@@ -7,6 +7,7 @@ import com.example.demo.employee.service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
@@ -21,12 +22,14 @@ class EmployeeControllerTest {
     private EmployeeController controller;
     private EmployeeService service;
     private ApplicationEventPublisher publisher;
+    private RabbitTemplate rabbitTemplate;
 
     @BeforeEach
     public void before() {
         this.service = mock(EmployeeService.class);
         this.publisher = mock(ApplicationEventPublisher.class);
-        this.controller = new EmployeeController(this.service, this.publisher);
+        this.rabbitTemplate = mock(RabbitTemplate.class);
+        this.controller = new EmployeeController(this.service, this.publisher, rabbitTemplate);
     }
 
     @Test
