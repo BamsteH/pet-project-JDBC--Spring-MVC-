@@ -19,7 +19,7 @@ import static com.example.demo.mockedEntities.employee.dto.EmployeeUpdateRequest
 import static org.mockito.Mockito.*;
 import static com.example.demo.mockedEntities.employee.dto.EmployeeResponseMock.*;
 
-class EmployeeServiceTest {
+class EmployeeServiceImplTest {
 
     private EmployeeService service;
     private EmployeeRepository repository;

@@ -1,10 +1,10 @@
 package com.example.demo.employee.virtualization.service;
 
-import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
+import java.util.List;
 
-@Service
-public class EmployeeService {
+public interface EmployeeService {
 
-
+  void accrue(List<Long> userIds, BigDecimal amount);
 
 }

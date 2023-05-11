@@ -9,4 +9,6 @@ public interface SalaryAccrualClient extends Closeable {
 
   DirectClient getDirectClient();
 
+  HistoryAccrualClient getHistoryAccrualClient();
+
 }
