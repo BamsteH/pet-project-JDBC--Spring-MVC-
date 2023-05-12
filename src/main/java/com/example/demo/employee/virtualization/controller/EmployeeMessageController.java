@@ -26,11 +26,36 @@ public class EmployeeMessageController {
     this.applicationEventPublisher = applicationEventPublisher;
   }
 
+  @RabbitListener(queues = "example-demo-queue-binding-1")
+  public void getFanout1(String message) {
+    logger.debug("1) receive fanout message: {}", message);
+  }
+
+  @RabbitListener(queues = "example-demo-queue-binding-2")
+  public void getFanout2(String message) {
+    logger.debug("2) receive fanout message: {}", message);
+  }
+
+  @RabbitListener(queues = "example-demo-queue-binding-3")
+  public void getFanout3(String message) {
+    logger.debug("3) receive fanout message: {}", message);
+  }
+
+  @RabbitListener(queues = "example-demo-queue-binding-4")
+  public void getFanout4Robin1(String message) {
+    logger.debug("4) receive fanout by Robin 1 message: {}", message);
+  }
+
+  @RabbitListener(queues = "example-demo-queue-binding-4")
+  public void getFanout4Robin2(String message) {
+    logger.debug("4) receive fanout  by Robin 2 message: {}", message);
+  }
+
   @RabbitListener(queues = "example-demo-queue")
   public void sortEmployeesAndAccrualWages1(
           String message
   ) {
-    logger.debug("1)receive message: {}", message);
+    logger.debug("1)receive direct message: {}", message);
     Object event;
     if (JsonAssembler.isJsonArray(message)) {
       EmployeeOriginal[] employees = JsonAssembler.toEmployees(message);
@@ -49,7 +74,7 @@ public class EmployeeMessageController {
   public void sortEmployeesAndAccrualWages2(
           String message
   ) {
-    logger.debug("2)receive message: {}", message);
+    logger.debug("2)receive direct message: {}", message);
     Object event;
     if (JsonAssembler.isJsonArray(message)) {
       EmployeeOriginal[] employees = JsonAssembler.toEmployees(message);
